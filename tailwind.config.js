@@ -15,11 +15,11 @@ export default {
 				// light mode
 				tremor: {
 					brand: {
-						faint: "#f0fdf4", // green-50
-						muted: "#bbf7d0", // green-200
-						subtle: "#4ade80", // green-400
-						DEFAULT: "#22c55e", // green-500
-						emphasis: "#15803d", // green-700
+						faint: "#eff6ff", // blue-50
+						muted: "#bfdbfe", // blue-200
+						subtle: "#60a5fa", // blue-400
+						DEFAULT: "#3b82f6", // blue-500
+						emphasis: "#1d4ed8", // blue-700
 						inverted: "#ffffff", // white
 					},
 					background: {
@@ -46,10 +46,10 @@ export default {
 				"dark-tremor": {
 					brand: {
 						faint: "#0B1229", // custom
-						muted: "#052e16", // green-950
-						subtle: "#166534", // green-800
-						DEFAULT: "#22c55e", // green-500
-						emphasis: "#4ade80", // blue-400
+						muted: "#172554", // blue-950
+						subtle: "#1e40af", // blue-800
+						DEFAULT: "#3b82f6", // blue-500
+						emphasis: "#60a5fa", // blue-400
 						inverted: "#030712", // gray-950
 					},
 					background: {

@@ -1,4 +1,5 @@
-import { Slider } from "../components/Slider";
+import { Button } from "@tremor/react";
+import { Link } from "react-router-dom";
 const Landing = () => {
 	return (
 		<>
@@ -22,7 +23,7 @@ const Landing = () => {
 					</form>
 				</nav>
 				{/* Photo name inside assets/img/ */}
-				<Slider images={["foto-1.jpg", "foto-2.jpg", "foto-3.jpg"]} />
+				{/* <Slider images={["foto-1.jpg", "foto-2.jpg", "foto-3.jpg"]} /> */}
 			</header>
 
 			<main>
@@ -30,7 +31,9 @@ const Landing = () => {
 				<div>Card 2</div>
 				<div>Card 3</div>
 			</main>
-
+			<Button>
+				<Link to="login">Login</Link>
+			</Button>
 			<footer>Fotter here</footer>
 		</>
 	);

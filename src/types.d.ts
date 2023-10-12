@@ -1,13 +1,4 @@
-enum UserRole {
-	SPECIALIST = "SPECIALIST",
-	HEAD_OF_DEPARTMENT = "HEAD_OF_DEPARTMENT",
-}
-
-enum RequestStatus {
-	PENDING = "pending",
-	APPROVED = "approved",
-	DENIED = "denied",
-}
+import { RequestStatus, UserRole } from "./const";
 
 interface IProduct {
 	id: string;

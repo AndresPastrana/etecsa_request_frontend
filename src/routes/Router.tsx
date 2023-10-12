@@ -2,6 +2,8 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import Counter from "../components/Counter";
 import MainContent from "../components/MainContent";
+import ProtectedRoute from "../components/ProtectedRoute";
+import { UserRole } from "../const";
 const WorkerPage = lazy(() => import("../pages/Worker"));
 const LoginPage = lazy(() => import("../pages/Login"));
 const SpecialistPage = lazy(() => import("../pages/Specialist"));
@@ -28,7 +30,11 @@ export const router = createBrowserRouter([
 		path: "/specialist",
 		element: (
 			<Suspense>
-				<SpecialistPage />
+				<ProtectedRoute
+					ToRenderComponet={SpecialistPage}
+					role={UserRole.SPECIALIST}
+					fallbackPath="/"
+				/>
 			</Suspense>
 		),
 		children: [
@@ -101,7 +107,11 @@ export const router = createBrowserRouter([
 		path: "/worker",
 		element: (
 			<Suspense>
-				<WorkerPage />
+				<ProtectedRoute
+					ToRenderComponet={WorkerPage}
+					role={UserRole.HEAD_OF_DEPARTMENT}
+					fallbackPath="/"
+				/>
 			</Suspense>
 		),
 		children: [

@@ -1,130 +1,154 @@
-export interface Commom {
+enum UserRole {
+	SPECIALIST = "SPECIALIST",
+	HEAD_OF_DEPARTMENT = "HEAD_OF_DEPARTMENT",
+}
+
+enum RequestStatus {
+	PENDING = "pending",
+	APPROVED = "approved",
+	DENIED = "denied",
+}
+
+interface IProduct {
+	id: string;
+	code: string;
+	name: string;
+	price: number;
+	aviableQuantity: number;
+}
+
+interface IProvince {
+	id: string;
 	name: string;
 }
 
-export type Address = {
-	address: string;
-};
-
-export enum Role {
-	Specialist = "specialist",
-	Admin = "admin",
-}
-
-export type Month = keyof typeof Months;
-
-export type Province = Commom & {};
-
-export type State = Commom & {
+interface IState {
+	id: string;
+	name: string;
 	province: string;
-};
-
-export type Route = Commom & { id: string };
-
-export type Tank = Commom & { id: string } & Address & {
-		capacity: number;
-		state: string;
-		routes: [string];
-	};
-
-export type ProductiveBase = Commom & { id: string } & Address & {
-		state: string;
-		route: string;
-	};
-
-export type MonthContract = {
-	month: Month;
-	cant: number;
-};
-
-export type Producer = {
-	firstname: string;
-	secondname?: string;
-	surename: string;
-	second_surename?: string;
-	age: number;
-	phone_number: string;
-	productive_base: string;
-	ci: string;
-	months_contracts?: Array<MonthContract>;
-	cant_animals?: number;
-};
-
-export type Report = {
-	type_milk: MilkType.hot | MilkType.cold;
-	dayli_collect: Number;
-	producer: string;
-	productive_base: string;
-};
-
-export type User =
-	| {
-			firstname: string;
-			secondname?: string;
-			surename: string;
-			second_surename?: string;
-			username: string;
-			password: string;
-	  } & { id: string } & (
-				| {
-						role: Role.Specialist;
-						productiveBaseInCharge: string;
-				  }
-				| {
-						role: Role.Admin;
-				  }
-			);
-
-export enum Routes {
-	producers = "/producer",
-	tanks = "/tank",
-	routes = "/route",
-	productiveBases = "/productive-base",
-	province = "/province",
-	state = "/state",
-	report = "/report",
-	auth = "/auth",
 }
 
-export enum MilkType {
-	hot = "hot",
-	cold = "cold",
+interface IDestiny {
+	id: string;
+	code: string;
+	description: string;
+	state: string;
+}
+interface IBilling {
+	id: string;
+	request: string;
+	total_import: number;
 }
 
-export enum ButtonSlider {
-	next = "next",
-	prev = "prev",
-}
-//************************ */ Admin Actions and State types
-// 1- CRUD of specialist
-// 2- CRUD of productive bases
-// 3- CRUD of Tanks
-// 4- CRUD of routes
-interface AdminState {
-	specialists: Array<User>;
-	tanks: Array<Tank>;
-	routes: Array<Route>;
-	productiveBases: Array<ProductiveBase>;
-	addProductiveBase: (productivebase: ProductiveBase) => void;
-	addSpecialist: (specialist: User) => void;
-	addTank: (tank: Tank) => void;
-	addRoute: (route: Route) => void;
-	editSpecialist: (payload: { id: string; data: User }) => void;
-	editTank: (payload: { id: string; data: Tank }) => void;
-	editRoute: (payload: { id: string; data: Route }) => void;
-	editProductiveBase: (payload: { id: string; data: ProductiveBase }) => void;
-	removeSpecialist: (id: string) => void;
-	removeTank: (id: string) => void;
-	removeRoute: (id: string) => void;
-	removeProductiveBase: (id: string) => void;
-	setRoutes: (payload: Array<Route>) => void;
-	setSpecialists: (payload: Array<User>) => void;
-	setTanks: (payload: Array<Tank>) => void;
-	setProductiveBases: (payload: Array<ProductiveBase>) => void;
+interface IUser {
+	id: string;
+	username: string;
+	password: string;
+	email: string;
+	role: UserRole;
+	firstName: string;
+	lastName: string;
+	departament?: string;
+	isValidPassword: (password: string) => Promise<boolean>;
 }
 
-//************************ */ Specialist Actions and State types
-// CRUD Producers of his productive base
-// CRUD dayli reports
-// Read the info of his prodcutive base
-// Generate reports of his prodcutive base --> Trabajadores cumplidores y no cumnplidores y no
+interface ICCosto {
+	id: string;
+	code: string;
+}
+
+interface IDepartament {
+	id: string;
+	ccosto: string;
+	descripcion: string;
+}
+interface IResource {
+	id: string;
+	product: string;
+	quantity: number;
+}
+
+interface IRequest {
+	id: string;
+	departament: string;
+	resources: Array<IResource>;
+	destiny: string;
+	status: RequestStatus;
+	aprovedBy?: string;
+	createdAt: Date;
+	updatedAt: Date;
+}
+
+type RequestCounter = {
+	[status in RequestStatus]: number;
+};
+
+type SpecialistStore = {
+	users: IUser[];
+	departments: IDepartament[];
+	products: IProduct[];
+	requests: IRequest[];
+	bills: IBilling[];
+	stadistics: RequestCounter;
+	destinies: IDestiny[];
+	ccost: ICCosto[];
+};
+
+type SpecialistActions = {
+	// CRUD actions for users
+	addUser: (user: IUser) => void;
+	updateUser: (user: IUser) => void;
+	deleteUser: (userId: string) => void;
+	setUsers: (users: IUser[]) => void;
+	// CRUD actions for departments
+	addDepartment: (department: IDepartament) => void;
+	updateDepartment: (department: IDepartament) => void;
+	deleteDepartment: (departmentId: string) => void;
+	setDepartments: (departments: IDepartament[]) => void;
+	// CRUD actions for products
+	addProduct: (product: IProduct) => void;
+	updateProduct: (product: IProduct) => void;
+	deleteProduct: (productId: string) => void;
+	setProducts: (products: IProduct[]) => void;
+
+	// CRUD actions for destinies
+	addDestinies: (destiny: IDestiny) => void;
+	updateDestiny: (destiny: IDestiny) => void;
+	deleteDestiny: (destinies: string) => void;
+	setDestinies: (destiny: IDestiny[]) => void;
+
+	// CRUD actions for requests
+	updateRequest: (request: IRequest) => void;
+	setRequest: (request: IRequest[]) => void;
+	// CRUD actions for bills
+	addBill: (bill: IBilling) => void;
+	updateStadistics: (newStadistics: RequestCounter) => void;
+	setBills: (bill: IBill[]) => void;
+};
+
+type WorkerStore = {
+	requests: IRequest[];
+	products: IProduct[];
+};
+
+type WorkerActions = {
+	setRequests: (request: IRequest[]) => void;
+	addRequest: (request: IRequest) => void;
+	setProducts: (products: IProduct[]) => void;
+};
+
+type SpecialistState = SpecialistStore & SpecialistActions;
+
+type WorkerState = WorkerStore & WorkerActions;
+
+//  enum Routes {
+// 	auth = "/auth",
+// 	user = "/user",
+// 	product = "/product",
+// 	destiny = "/destiny",
+// 	province = "/province",
+// 	states = "/state",
+// 	ccosto = "/ccosto",
+// 	request = "/request",
+// 	departament = "/departament",
+// }

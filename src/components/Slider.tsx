@@ -1,51 +1,66 @@
-import { FC, useState } from "react";
-import { ButtonSlider } from "../types.d.js";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { Flex, Icon } from "@tremor/react";
+import { FC, useEffect, useState } from "react";
 // The slider componet will recive a list of images path
-type Props = { images: Array<string> };
+type Props = { images: Array<string>; styles?: string };
 
-export const Slider: FC<Props> = ({ images }) => {
+enum ArrowAction {
+	next = "next",
+	prev = "prev",
+}
+
+export const Slider: FC<Props> = ({ images, styles }) => {
 	const [imagesPaths] = useState(images);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const currentImagePath = `../../assets/img/${imagesPaths[currentIndex]}`;
 
-	const handleClick = (type: ButtonSlider) => {
+	const handleNextSlider = (type: ArrowAction) => {
 		if (imagesPaths.length === 0) return;
 		const lastIndex = imagesPaths.length - 1;
-		if (type === ButtonSlider.next) {
+		if (type === ArrowAction.next) {
 			return currentIndex === lastIndex
 				? setCurrentIndex(0)
 				: setCurrentIndex(currentIndex + 1);
-		} else if (type === ButtonSlider.prev) {
+		} else if (type === ArrowAction.prev) {
 			currentIndex === 0
 				? setCurrentIndex(lastIndex)
 				: setCurrentIndex(currentIndex - 1);
 		}
 	};
 
+	useEffect(() => {
+		const timer = setTimeout(() => handleNextSlider(ArrowAction.next), 3000);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [currentIndex]);
+
 	return (
-		<div>
-			<h1>Slider</h1>
-			<div
-				style={{
-					position: "relative",
-					backgroundRepeat: "no-repeat",
-					backgroundPosition: "center",
-					backgroundSize: "cover",
-					backgroundImage: `url(${currentImagePath})`,
-					borderBottom: "1px solid",
-					width: "100%",
-					minHeight: "500px",
-					maxHeight: "800px",
-				}}
-			>
-				<button type="button" onClick={() => handleClick(ButtonSlider.prev)}>
-					Prev
-				</button>
-				<button type="button" onClick={() => handleClick(ButtonSlider.next)}>
-					Next
-				</button>
-			</div>
+		<div className="">
+			<Flex>
+				<Icon
+					onClick={() => handleNextSlider(ArrowAction.prev)}
+					icon={ChevronLeftIcon}
+					variant="outlined"
+					size="xs"
+				/>
+
+				{/* Slider Item */}
+				<div className="transition ease-in-out delay-150">
+					<img
+						className="w-[200px] h-[200px] "
+						src={`../assets/../img/${currentImagePath}`}
+						alt=""
+					/>
+				</div>
+				<Icon
+					onClick={() => handleNextSlider(ArrowAction.next)}
+					icon={ChevronRightIcon}
+					variant="outlined"
+					size="xs"
+				/>
+			</Flex>
 		</div>
 	);
 };

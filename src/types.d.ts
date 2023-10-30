@@ -1,145 +1,171 @@
 import { RequestStatus, UserRole } from "./const";
 
 interface IProduct {
-	id: string;
-	code: string;
-	name: string;
-	price: number;
-	aviableQuantity: number;
+  id: string;
+  code: string;
+  name: string;
+  price: number;
+  aviableQuantity: number;
 }
 
 interface IProvince {
-	id: string;
-	name: string;
+  id: string;
+  name: string;
 }
 
 interface IState {
-	id: string;
-	name: string;
-	province: string;
+  id: string;
+  name: string;
+  province: string;
 }
 
 interface IDestiny {
-	id: string;
-	code: string;
-	description: string;
-	state: string;
+  id: string;
+  code: string;
+  description: string;
+  state: {
+    _id: string;
+    province: string;
+    name: string;
+  };
 }
 interface IBilling {
-	id: string;
-	request: string;
-	total_import: number;
+  id: string;
+  request: string;
+  total_import: number;
 }
 
 interface IUser {
-	id: string;
-	username: string;
-	password: string;
-	email: string;
-	role: UserRole;
-	firstName: string;
-	lastName: string;
-	departament?: string;
-	isValidPassword: (password: string) => Promise<boolean>;
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  role: UserRole;
+  firstName: string;
+  lastName: string;
+  departament: {
+    _id: string;
+    descripcion: string;
+    ccosto: string;
+  } | null;
+  // isValidPassword: (password: string) => Promise<boolean>;
 }
 
 interface ICCosto {
-	id: string;
-	code: string;
+  id: string;
+  code: string;
 }
 
 interface IDepartament {
-	id: string;
-	ccosto: string;
-	descripcion: string;
+  id: string;
+  ccosto: {
+    _id: string;
+    code: string;
+  };
+  descripcion: string;
 }
 interface IResource {
-	id: string;
-	product: string;
-	quantity: number;
+  id: string;
+  product: string;
+  quantity: number;
 }
 
 interface IRequest {
-	id: string;
-	departament: string;
-	resources: Array<IResource>;
-	destiny: string;
-	status: RequestStatus;
-	aprovedBy?: string;
-	createdAt: Date;
-	updatedAt: Date;
+  id: string;
+  departament: string;
+  resources: Array<IResource>;
+  destiny: string;
+  status: RequestStatus;
+  aprovedBy?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 type RequestCounter = {
-	[status in RequestStatus]: number;
+  [status in RequestStatus]: number;
+};
+
+type CommonStore = {
+  products: IProduct[];
+  states: IState[];
+  destinies: IDestiny[];
+  requests: IRequest[];
+};
+
+type CommonActions = {
+  setStates: (states: IState[]) => void;
+  setProducts: (products: IProduct[]) => void;
+  setDestinies: (destiny: IDestiny[]) => void;
+  setRequests: (request: IRequest[]) => void;
 };
 
 type SpecialistStore = {
-	users: IUser[];
-	departments: IDepartament[];
-	products: IProduct[];
-	requests: IRequest[];
-	bills: IBilling[];
-	stadistics: RequestCounter;
-	destinies: IDestiny[];
-	ccost: ICCosto[];
+  users: IUser[];
+  departments: IDepartament[];
+  bills: IBilling[];
+  stadistics: RequestCounter;
+  ccostos: ICCosto[];
 };
 
 type SpecialistActions = {
-	// CRUD actions for users
-	addUser: (user: IUser) => void;
-	updateUser: (user: IUser) => void;
-	deleteUser: (userId: string) => void;
-	setUsers: (users: IUser[]) => void;
-	// CRUD actions for departments
-	addDepartment: (department: IDepartament) => void;
-	updateDepartment: (department: IDepartament) => void;
-	deleteDepartment: (departmentId: string) => void;
-	setDepartments: (departments: IDepartament[]) => void;
-	// CRUD actions for products
-	addProduct: (product: IProduct) => void;
-	updateProduct: (product: IProduct) => void;
-	deleteProduct: (productId: string) => void;
-	setProducts: (products: IProduct[]) => void;
+  // CRUD actions for users
+  addUser: (user: IUser) => void;
+  updateUser: (user: IUser) => void;
+  deleteUser: (userId: string) => void;
+  setUsers: (users: IUser[]) => void;
+  // CRUD actions for departments
+  addDepartment: (department: IDepartament) => void;
+  updateDepartment: (department: IDepartament) => void;
+  deleteDepartment: (departmentId: string) => void;
+  setDepartments: (departments: IDepartament[]) => void;
+  // CRUD actions for products
+  addProduct: (product: IProduct) => void;
+  updateProduct: (product: IProduct) => void;
+  deleteProduct: (productId: string) => void;
 
-	// CRUD actions for destinies
-	addDestinies: (destiny: IDestiny) => void;
-	updateDestiny: (destiny: IDestiny) => void;
-	deleteDestiny: (destinies: string) => void;
-	setDestinies: (destiny: IDestiny[]) => void;
+  // CRUD actions for destinies
+  addDestinies: (destiny: IDestiny) => void;
+  updateDestiny: (destiny: IDestiny) => void;
+  deleteDestiny: (destinies: string) => void;
 
-	// CRUD actions for requests
-	updateRequest: (request: IRequest) => void;
-	setRequest: (request: IRequest[]) => void;
-	// CRUD actions for bills
-	addBill: (bill: IBilling) => void;
-	updateStadistics: (newStadistics: RequestCounter) => void;
-	setBills: (bill: IBill[]) => void;
-};
+  // CRUD actions for requests
+  updateRequest: (request: IRequest) => void;
 
-type WorkerStore = {
-	requests: IRequest[];
-	products: IProduct[];
+  // CRUD actions for bills
+  addBill: (bill: IBilling) => void;
+  updateStadistics: (newStadistics: RequestCounter) => void;
+  setBills: (bill: IBill[]) => void;
+  // R actions for ccosto
+  setCCostos: (ccostos: ICCosto[]) => void;
 };
 
 type WorkerActions = {
-	setRequests: (request: IRequest[]) => void;
-	addRequest: (request: IRequest) => void;
-	setProducts: (products: IProduct[]) => void;
+  addRequest: (request: IRequest) => void;
 };
 
-type SpecialistState = SpecialistStore & SpecialistActions;
+type SpecialistState = CommonStore &
+  SpecialistStore &
+  CommonActions &
+  SpecialistActions;
 
-type WorkerState = WorkerStore & WorkerActions;
+type WorkerState = CommonStore & CommonActions & WorkerActions;
 
-//  enum Routes {
-// 	auth = "/auth",
-// 	user = "/user",
-// 	product = "/product",
-// 	destiny = "/destiny",
-// 	province = "/province",
-// 	states = "/state",
-// 	ccosto = "/ccosto",
-// 	request = "/request",
-// 	departament = "/departament",
-// }
+interface ServerResponse {
+  success: boolean;
+  msg: string;
+  data: any;
+  error: any;
+}
+
+type DepartmentFormData = Pick<IDepartament, "descripcion" | "id"> & {
+  ccosto: string;
+};
+
+type DestinyFormData = Pick<IDestiny, "code" | "description" | "id"> & {
+  state: string;
+};
+
+type UserFormData = Pick<
+  IUser,
+  "id" | "firstName" | "lastName" | "email" | "role" | "username" | "password"
+> & { departament?: string };

@@ -1,0 +1,1 @@
+export { DepartmentPanel } from "./Department";

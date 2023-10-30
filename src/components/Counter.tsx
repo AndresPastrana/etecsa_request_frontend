@@ -1,8 +1,8 @@
 const Counter = () => {
 	return (
-		<div>
+		<article className="h-full">
 			<h2>Counter of request</h2>
-		</div>
+		</article>
 	);
 };
 

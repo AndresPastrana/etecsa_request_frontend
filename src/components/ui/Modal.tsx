@@ -1,4 +1,4 @@
-import { Button, Flex } from "@tremor/react";
+import { Flex } from "@tremor/react";
 import { useEffect, useRef, useState, FC } from "react";
 import { ButtonFactory } from "./Button";
 import { XMarkIcon } from "@heroicons/react/24/outline";

@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Navigate } from "react-router-dom";
 import { UserRole } from "../const";
 import useAuth from "../hooks/useAuth";

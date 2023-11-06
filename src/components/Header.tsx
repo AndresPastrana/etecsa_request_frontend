@@ -1,6 +1,5 @@
 import { Icon, Text } from "@tremor/react";
 import useAuth from "../hooks/useAuth";
-import { Bars3BottomLeftIcon } from "@heroicons/react/24/outline";
 Text;
 const Header = () => {
   const { loggedUser } = useAuth();
@@ -16,7 +15,7 @@ const Header = () => {
             alt="Logo Etecsa"
           />
         </span>
-        <Icon icon={Bars3BottomLeftIcon} size="lg" />
+        {/* <Icon icon={Bars3BottomLeftIcon} size="lg" /> */}
       </span>
       <div className="flex items-center gap-4">
         <Text>{currentDate}</Text>

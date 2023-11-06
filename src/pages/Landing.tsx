@@ -77,17 +77,12 @@ const Landing = () => {
             <div className="flex mt-12 gap-3 items-center ">
               <Link to="/login">
                 <Button
-                  size="lg"
                   variant="primary"
-                  className="bg-white text-tremor-brand-emphasis hover:bg-transparent hover:border-tremor-brand-faint hover:text-tremor-brand-faint"
+                  className="w-60 ml-10 bg-white text-tremor-brand-emphasis hover:bg-transparent hover:border-tremor-brand-faint hover:text-tremor-brand-faint"
                 >
-                  Iniciar Secion
+                  Iniciar Seccion
                 </Button>
               </Link>
-
-              <Button size="lg" variant="secondary" className="text-white">
-                Registrarme
-              </Button>
             </div>
           </div>
           <div className="hidden md:block">

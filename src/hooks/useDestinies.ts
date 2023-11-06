@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { DestinyService } from "../services";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 import { DestinyFormData } from "../types";
 import useAuth from "./useAuth";
 
@@ -11,7 +11,7 @@ export const useDestinies = () => {
     deleteDestiny,
     setDestinies,
     updateDestiny,
-  } = useSpecialistStore(
+  } = useAppStore(
     ({
       destinies,
       setDestinies,

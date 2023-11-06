@@ -55,7 +55,7 @@ export const ProductForm: FC<ProductFormProps> = ({
   return (
     <Modal open={open} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h2>Destinos</h2>
+        <h2>Productos</h2>
         <section className="h-full basis-3/12">
           <article className="max-w-[400px] mx-auto p-5 flex flex-col gap-3">
             <Controller

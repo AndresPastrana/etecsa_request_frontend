@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 import { DepartamentService } from "../services";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 import useAuth from "./useAuth";
 import { DepartmentFormData } from "../types";
 
@@ -12,7 +12,7 @@ const useDepartments = () => {
     addDepartment,
     updateDepartment,
     deleteDepartment,
-  } = useSpecialistStore(
+  } = useAppStore(
     ({
       departments,
       setDepartments,

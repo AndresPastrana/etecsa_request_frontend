@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { IDepartament, SpecialistState } from "../types";
+import { IDepartament, AppState } from "../types";
 
-export const useSpecialistStore = create<SpecialistState>((set) => ({
+export const useAppStore = create<AppState>((set) => ({
   users: [],
   departments: [],
   products: [],
@@ -17,6 +17,8 @@ export const useSpecialistStore = create<SpecialistState>((set) => ({
   states: [],
   setStates: (states) => set(() => ({ states })),
   setRequests: (requests) => set(() => ({ requests })),
+  addRequest: (request) =>
+    set((state) => ({ requests: [...state.requests, request] })),
 
   // Users
   setUsers: (users) => set(() => ({ users })),
@@ -86,9 +88,12 @@ export const useSpecialistStore = create<SpecialistState>((set) => ({
         request.id === updatedRequest.id ? updatedRequest : request
       ),
     })),
+
+  // Facturas
   setBills: (bills) => set(() => ({ bills })),
 
   addBill: (bill) => set((state) => ({ bills: [...state.bills, bill] })),
+  // Departamentos de costos
   updateStadistics: (newStatics) =>
     set((state) => ({ bills: { ...state.bills, ...newStatics } })),
 

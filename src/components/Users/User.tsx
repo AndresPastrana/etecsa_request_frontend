@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useUsers } from "../../hooks";
 import { UserFormData } from "../../types";
-import { MainLayout } from "../Layout";
 import UserTable from "./UserTable";
 import { findById } from "../../helper/findById";
 import { UserForm } from "./UserForm";
@@ -28,7 +27,7 @@ export const UserPanel = () => {
     }
   };
 
-  const handleBtnAddNew = () => {
+  const cleanForm = () => {
     if (activeUser) {
       setActiveUser(null);
     }
@@ -49,13 +48,13 @@ export const UserPanel = () => {
 
   const handleSubmit = async (user: UserFormData) => {
     if (mode === FormMode.insert) {
-      return await insertUserAPI(user);
+      await insertUserAPI(user);
     }
     if (mode === FormMode.edit) {
-      return await updateUserAPI(user);
+      await updateUserAPI(user);
     }
 
-    return;
+    return cleanForm();
   };
 
   useEffect(() => {
@@ -73,7 +72,6 @@ export const UserPanel = () => {
         users={users}
         handleBtnEdit={handleBtnEdit}
         handleBtnDelete={handleDelete}
-        handleBtnAddNew={handleBtnAddNew}
       />
     </>
   );

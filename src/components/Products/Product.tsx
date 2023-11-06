@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { useProducts } from "../../hooks/index";
 import { ProductTable } from "./ProductTable";
 import { ProductForm } from "./ProductForm";
-import { FormMode } from "../../const";
+import { FormMode, UserRole } from "../../const";
 import { IProduct } from "../../types";
 import { findById } from "../../helper/findById";
 import { ButtonFactory } from "../ui";
+import clsx from "clsx";
+import useAuth from "../../hooks/useAuth";
 
 export const ProductPanel = () => {
+  const { loggedUser } = useAuth();
+  const isSpecialist = loggedUser?.role === UserRole.SPECIALIST;
   const {
     products,
     loadProducts,
@@ -80,15 +84,18 @@ export const ProductPanel = () => {
         onSubmitAction={handleSubmit}
       />
 
-      <section className="h-full flex flex-col max-h-full p-4">
+      <section className="basis-9/12 h-full flex flex-col max-h-full p-4 ">
         <ProductTable
           products={products}
           handleDelete={handldeDelete}
           hanldeEdit={handleBtnEdit}
+          isSpecialist={isSpecialist}
         />
         <ButtonFactory
           text="Agregar un nuevo producto"
-          className="w-full mb-4"
+          className={clsx("w-full mb-4", {
+            "hidden ": !isSpecialist,
+          })}
           variant="secondary"
           onClick={handleBtnAddNew}
         />

@@ -140,7 +140,12 @@ export const UserForm: FC<UserFormProps> = ({
             render={({ field }) => (
               <Select placeholder="Departament" {...field}>
                 {departments.map((d) => {
-                  return <SelectItem value={d.id}> {d.descripcion}</SelectItem>;
+                  return (
+                    <SelectItem key={d.id} value={d.id}>
+                      {" "}
+                      {d.descripcion}
+                    </SelectItem>
+                  );
                 })}
               </Select>
             )}
@@ -198,7 +203,6 @@ export const UserForm: FC<UserFormProps> = ({
           <Controller
             name="password"
             control={control}
-            disabled={mode === FormMode.edit}
             rules={{
               required: {
                 value: mode !== FormMode.edit,

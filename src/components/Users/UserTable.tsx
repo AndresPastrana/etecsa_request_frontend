@@ -9,7 +9,6 @@ import {
   TableBody,
   TableCell,
   Text,
-  Title,
   Badge,
 } from "@tremor/react";
 import { ButtonFactory } from "../ui/index";
@@ -18,7 +17,6 @@ type Props = {
   users: Array<IUser>;
   handleBtnEdit: (user: string) => void;
   handleBtnDelete: (userID: string) => void;
-  handleBtnAddNew: () => void;
 };
 
 const THeader = () => {
@@ -84,12 +82,7 @@ const TBody: FC<Props> = ({ users, handleBtnEdit, handleBtnDelete }) => {
   );
 };
 
-const UserTable: FC<Props> = ({
-  users,
-  handleBtnEdit,
-  handleBtnDelete,
-  handleBtnAddNew,
-}) => {
+const UserTable: FC<Props> = ({ users, handleBtnEdit, handleBtnDelete }) => {
   return (
     <Table className="grow h-full max-h-full">
       <THeader />
@@ -97,7 +90,6 @@ const UserTable: FC<Props> = ({
         users={users}
         handleBtnEdit={handleBtnEdit}
         handleBtnDelete={handleBtnDelete}
-        handleBtnAddNew={handleBtnAddNew}
       />
     </Table>
   );

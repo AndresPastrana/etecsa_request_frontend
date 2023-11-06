@@ -12,7 +12,12 @@ import { FC } from "react";
 import { ButtonFactory } from "../ui";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const THead = () => {
+import clsx from "clsx";
+
+type THead = {
+  hideActions: boolean;
+};
+const THead: FC<THead> = ({ hideActions = false }) => {
   const ths = ["codigo", "name", "precio", "cant"];
 
   return (
@@ -27,12 +32,14 @@ const THead = () => {
           </TableHeaderCell>
         ))}
 
-        <TableHeaderCell
-          key={`thdp-actions}`}
-          className="text-center bg-tremor-background"
-        >
-          {"Actions".toUpperCase()}
-        </TableHeaderCell>
+        {!hideActions && (
+          <TableHeaderCell
+            key={`thdp-actions}`}
+            className="text-center bg-tremor-background"
+          >
+            {"Actions".toUpperCase()}
+          </TableHeaderCell>
+        )}
       </TableRow>
     </TableHead>
   );
@@ -42,9 +49,15 @@ type TBodyProps = {
   products: Array<IProduct>;
   hanldeEdit: (id: string) => void;
   handleDelete: (id: string) => void;
+  isSpecialist: boolean;
 };
 
-const TBody: FC<TBodyProps> = ({ products, handleDelete, hanldeEdit }) => {
+const TBody: FC<TBodyProps> = ({
+  products,
+  handleDelete,
+  hanldeEdit,
+  isSpecialist,
+}) => {
   return (
     <TableBody>
       {products.map(({ code, id, aviableQuantity, name, price }) => {
@@ -57,6 +70,8 @@ const TBody: FC<TBodyProps> = ({ products, handleDelete, hanldeEdit }) => {
             <TableCell>
               <Flex justifyContent="around" className="gap-3">
                 <ButtonFactory
+                  className={clsx({ hidden: !isSpecialist })}
+                  disabled={!isSpecialist}
                   icon={PencilIcon}
                   onClick={() => hanldeEdit(id)}
                   text="edit"
@@ -64,6 +79,8 @@ const TBody: FC<TBodyProps> = ({ products, handleDelete, hanldeEdit }) => {
                   color="blue"
                 />
                 <ButtonFactory
+                  className={clsx({ hidden: !isSpecialist })}
+                  disabled={!isSpecialist}
                   icon={TrashIcon}
                   onClick={() => handleDelete(id)}
                   text="delete"
@@ -79,18 +96,20 @@ const TBody: FC<TBodyProps> = ({ products, handleDelete, hanldeEdit }) => {
   );
 };
 
-export const ProductTable: FC<TBodyProps> = ({
+export const ProductTable: FC<Omit<TBodyProps, "disabledActions">> = ({
   products = [],
   handleDelete,
   hanldeEdit,
+  isSpecialist,
 }) => {
   return (
     <Table className="grow">
-      <THead />
+      <THead hideActions={!isSpecialist} />
       <TBody
         products={products}
         handleDelete={handleDelete}
         hanldeEdit={hanldeEdit}
+        isSpecialist={isSpecialist}
       />
     </Table>
   );

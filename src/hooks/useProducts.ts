@@ -1,12 +1,13 @@
 import { toast } from "sonner";
 import { ProductService } from "../services";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 import useAuth from "./useAuth";
 import { IProduct } from "../types";
 
+// TODO: Refactor the useProducts hook to use the common store
 export const useProducts = () => {
   const { products, setProducts, addProduct, updateProduct, deleteProduct } =
-    useSpecialistStore(
+    useAppStore(
       ({
         products,
         addProduct,

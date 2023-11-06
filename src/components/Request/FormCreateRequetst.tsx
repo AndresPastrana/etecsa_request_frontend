@@ -1,149 +1,134 @@
-import {
-  Title,
-  Subtitle,
-  Flex,
-  Table,
-  TableHead,
-  TableRow,
-  TableHeaderCell,
-  TableBody,
-  TableCell,
-  Metric,
-  Button,
-} from "@tremor/react";
-const data = [
-  {
-    codigo: "001",
-    producto: "Producto A",
-    precio: 10.99,
-    cantidad: 5,
-    importe: 54.95,
-  },
-  {
-    codigo: "002",
-    producto: "Producto B",
-    precio: 15.49,
-    cantidad: 3,
-    importe: 46.47,
-  },
-  {
-    codigo: "003",
-    producto: "Producto C",
-    precio: 8.99,
-    cantidad: 7,
-    importe: 62.93,
-  },
-  {
-    codigo: "004",
-    producto: "Producto D",
-    precio: 12.99,
-    cantidad: 2,
-    importe: 25.98,
-  },
-  {
-    codigo: "005",
-    producto: "Producto E",
-    precio: 6.99,
-    cantidad: 4,
-    importe: 27.96,
-  },
-];
+import { useEffect, useState } from "react";
+import { useDestinies, useProducts } from "../../hooks";
+import { Flex, NumberInput, Select, SelectItem, Title } from "@tremor/react";
+import { ButtonFactory } from "../ui";
+import { IResource } from "../../types";
+import { toast } from "sonner";
+import { useRequest } from "../../hooks/useRequest";
 
-const FlexContainerWithButtons = () => (
-  <Flex justifyContent="between">
-    <Button size="md" variant="primary" color="blue">
-      Aprobar
-    </Button>
-    <Button size="md" variant="secondary">
-      Denegar
-    </Button>
-  </Flex>
-);
-
-const ApprovalInformation = () => (
-  <Flex justifyContent="space-between">
-    <div>
-      <Title>Importe Total</Title>
-      <Metric>$ 234</Metric>
-    </div>
-    <div>
-      <Title>Aprobada por</Title>
-      <Subtitle>name in case any</Subtitle>
-    </div>
-    <div>
-      <Title>Aprobada por</Title>
-      <Subtitle>Fecha de aprovación</Subtitle>
-    </div>
-  </Flex>
-);
-const ResourcesTable = ({ data }) => (
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableHeaderCell>Código</TableHeaderCell>
-        <TableHeaderCell>Producto</TableHeaderCell>
-        <TableHeaderCell>Precio</TableHeaderCell>
-        <TableHeaderCell>Cantidad</TableHeaderCell>
-        <TableHeaderCell>Importe</TableHeaderCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {data.map((item, index) => (
-        <TableRow key={index}>
-          <TableCell>{item.codigo}</TableCell>
-          <TableCell>{item.producto}</TableCell>
-          <TableCell>{item.precio.toFixed(2)}</TableCell>
-          <TableCell>{item.cantidad}</TableCell>
-          <TableCell>{item.importe.toFixed(2)}</TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
-
-const RequestInfo = () => {
-  return (
-    <div>
-      <div>
-        <Title>Municipio</Title>
-        <Subtitle>Your Municipio Description Goes Here</Subtitle>
-      </div>
-      <div>
-        <Title>Departamento</Title>
-        <Subtitle>Your Departamento Description Goes Here</Subtitle>
-      </div>
-      <div>
-        <Title>CCosto</Title>
-        <Subtitle>Your CCosto Description Goes Here</Subtitle>
-      </div>
-      <div>
-        <Title>Estado</Title>
-        <Subtitle>Your Estado Description Goes Here</Subtitle>
-      </div>
-      <div>
-        <Title>Fecha</Title>
-        <Subtitle>Your Fecha Description Goes Here</Subtitle>
-      </div>
-
-      <div>
-        <Title>ID</Title>
-        <Subtitle>76867687s6df786sd</Subtitle>
-
-        <div>
-          <Title>Argumento</Title>
-          <Subtitle>Your Argumento Description Goes Here</Subtitle>
-        </div>
-      </div>
-    </div>
-  );
-};
 export const FormCreateRequetst = () => {
+  // Get the destinies and the Products
+  const { products, loadProducts } = useProducts();
+  const { destinies, loadDestinies } = useDestinies();
+  const { createRequestAPI } = useRequest();
+
+  const [request, setRequest] = useState<{
+    destiny: string;
+    resources: Array<Pick<IResource, "product" | "quantity">> | [];
+  }>({
+    destiny: "",
+    resources: [],
+  });
+  const handlCheckBoxClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const { checked, value } = e.currentTarget;
+    if (checked) {
+      //Add the resource with 0 quatinty  the input filed
+
+      setRequest((prev) => {
+        const newList = [...prev.resources, { product: value, quantity: 0 }];
+        return { ...prev, resources: newList };
+      });
+    } else {
+      // Remove the resource from the list
+
+      setRequest((prev) => {
+        return {
+          ...prev,
+          resources: prev.resources.filter((r) => r.product !== value),
+        };
+      });
+    }
+  };
+  const handleChangeCant = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const { name, value } = e.currentTarget;
+    console.log(name);
+    console.log(value);
+
+    const q = value === "" ? 0 : parseInt(value);
+    setRequest((prev) => {
+      return {
+        ...prev,
+        resources: prev.resources.map((r) => {
+          return r.product !== name ? r : { product: r.product, quantity: q };
+        }),
+      };
+    });
+  };
+
+  // Helper to disble or able the cant input
+  const isProductChecked = (value: string) =>
+    request.resources.findIndex((r) => {
+      return r.product === value;
+    }) === -1;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (request.destiny === "" || request.resources.length === 0) {
+      return toast.error("Invalid data");
+    }
+    createRequestAPI(request);
+
+    // TODO OK
+  };
+  useEffect(() => {
+    Promise.all([loadProducts(), loadDestinies()]);
+  }, []);
+
+  //  const [resources ,setResour] = useState([])
   return (
-    <Flex flexDirection="col">
-      <RequestInfo />
-      <ResourcesTable data={data} />
-      <ApprovalInformation />
-      <FlexContainerWithButtons />
-    </Flex>
+    <section className="basis-full flex flex-col">
+      <Title className="text-3xl mb-10">Nueva Solicitud</Title>
+      <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
+        <Title className="mb-3">Productos</Title>
+        <section className=" mb-8 max-h-[200px] overflow-y-scroll p-5 rounded-lg scroll-smooth scroll-m-1  shadow-tremor-card">
+          {products.map(({ name, aviableQuantity, id }) => {
+            return (
+              <div className="flex items-center gap-4 p-2">
+                <Flex
+                  className="w-40 gap-2"
+                  justifyContent="start"
+                  flexDirection="row"
+                >
+                  <input
+                    type="checkbox"
+                    name={name}
+                    id={name}
+                    value={id}
+                    onChange={handlCheckBoxClick}
+                  />
+                  <label htmlFor={name}>{name.toUpperCase()}</label>
+                </Flex>
+                <NumberInput
+                  name={id}
+                  disabled={isProductChecked(id)}
+                  placeholder="Cantifa"
+                  className="max-w-[50px]"
+                  max={aviableQuantity}
+                  defaultValue={0}
+                  min={0}
+                  onChange={handleChangeCant}
+                />
+              </div>
+            );
+          })}
+        </section>
+
+        <Select
+          placeholder="Destino"
+          className="[&>ul]:max-h-28 mb-28"
+          value={request.destiny}
+          onChange={(e) => {
+            setRequest((prev) => ({ ...prev, destiny: e }));
+          }}
+        >
+          {destinies.map((s) => (
+            <SelectItem defaultChecked={request.destiny === s.id} value={s.id}>
+              {s.description}
+            </SelectItem>
+          ))}
+        </Select>
+        <ButtonFactory type="submit" className="w-full" text="Make request" />
+      </form>
+    </section>
   );
 };

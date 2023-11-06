@@ -1,15 +1,13 @@
 import { CCostoService } from "../services/index";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 import useAuth from "./useAuth";
 
 export const useCCostos = () => {
   const { loggedUser } = useAuth();
-  const { ccostos, setCCostos } = useSpecialistStore(
-    ({ ccostos, setCCostos }) => ({
-      ccostos,
-      setCCostos,
-    })
-  );
+  const { ccostos, setCCostos } = useAppStore(({ ccostos, setCCostos }) => ({
+    ccostos,
+    setCCostos,
+  }));
 
   const loadCCostos = async () => {
     try {

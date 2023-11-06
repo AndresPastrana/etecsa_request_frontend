@@ -1,8 +1,9 @@
 import { StateService } from "../services";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 
+// TODO: Refactor the useState hook to use the common store
 export const useStates = () => {
-  const { states, setStates } = useSpecialistStore(({ states, setStates }) => ({
+  const { states, setStates } = useAppStore(({ states, setStates }) => ({
     states,
     setStates,
   }));

@@ -85,29 +85,20 @@ type RequestCounter = {
   [status in RequestStatus]: number;
 };
 
-type CommonStore = {
+type AppState = {
   products: IProduct[];
   states: IState[];
   destinies: IDestiny[];
-  requests: IRequest[];
-};
-
-type CommonActions = {
-  setStates: (states: IState[]) => void;
-  setProducts: (products: IProduct[]) => void;
-  setDestinies: (destiny: IDestiny[]) => void;
-  setRequests: (request: IRequest[]) => void;
-};
-
-type SpecialistStore = {
+  requests: RequestFormData[];
   users: IUser[];
   departments: IDepartament[];
   bills: IBilling[];
   stadistics: RequestCounter;
   ccostos: ICCosto[];
-};
-
-type SpecialistActions = {
+  setStates: (states: IState[]) => void;
+  setProducts: (products: IProduct[]) => void;
+  setDestinies: (destiny: IDestiny[]) => void;
+  setRequests: (request: IRequest[]) => void;
   // CRUD actions for users
   addUser: (user: IUser) => void;
   updateUser: (user: IUser) => void;
@@ -129,7 +120,8 @@ type SpecialistActions = {
   deleteDestiny: (destinies: string) => void;
 
   // CRUD actions for requests
-  updateRequest: (request: IRequest) => void;
+  updateRequest: (request: RequestFormData) => void;
+  addRequest: (request: RequestFormData) => void;
 
   // CRUD actions for bills
   addBill: (bill: IBilling) => void;
@@ -138,17 +130,6 @@ type SpecialistActions = {
   // R actions for ccosto
   setCCostos: (ccostos: ICCosto[]) => void;
 };
-
-type WorkerActions = {
-  addRequest: (request: IRequest) => void;
-};
-
-type SpecialistState = CommonStore &
-  SpecialistStore &
-  CommonActions &
-  SpecialistActions;
-
-type WorkerState = CommonStore & CommonActions & WorkerActions;
 
 interface ServerResponse {
   success: boolean;
@@ -169,3 +150,12 @@ type UserFormData = Pick<
   IUser,
   "id" | "firstName" | "lastName" | "email" | "role" | "username" | "password"
 > & { departament?: string };
+
+type RequestFormData = Pick<IRequest, "id" | "status" | "createdAt"> & {
+  departament: ({ _id: string } & Pick<IDepartament, "descripcion">) | null;
+  destiny: ({ _id: string } & Pick<IDestiny, "description">) | null;
+  aprovedBy: ({ _id: string } & Pick<IUser, "firstName">) | null;
+  resources: [
+    { _id: string; quantity: number; product: { _id: string; name: string } }
+  ];
+};

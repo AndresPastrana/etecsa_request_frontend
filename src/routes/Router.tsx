@@ -8,6 +8,11 @@ import Test from "../components/Test";
 import { Destiny } from "../components/Destiniy/Destiny";
 import { DepartmentPanel } from "../components/Departamnet/index";
 import { ProductPanel } from "../components/Products/index";
+import { FormCreateRequetst } from "../components/Request/FormCreateRequetst";
+import { ListRequest } from "../components/Request/ListRequest";
+import RequestSpecialist from "../components/Request/RequestSpecialist";
+import Graphic from "../components/Stadistics/Grapich";
+import Bills from "../components/Bills/Bills";
 const WorkerPage = lazy(() => import("../pages/Worker"));
 const LoginPage = lazy(() => import("../pages/Login"));
 const SpecialistPage = lazy(() => import("../pages/Specialist"));
@@ -56,11 +61,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "stadistic",
-        element: <h1>Statdistics Grafic</h1>,
+        element: (
+          <>
+            <h1>Stadistics</h1>
+            <Graphic />
+          </>
+        ),
       },
       {
         path: "bill",
-        element: <h1>Bill</h1>,
+        element: (
+          <>
+            <h1>Bills</h1>
+            <Bills />
+          </>
+        ),
       },
       {
         path: "destiny",
@@ -74,16 +89,14 @@ export const router = createBrowserRouter([
         path: "request",
         element: (
           <>
-            <RequestCounterBadge />
-            <h1>MM</h1>
-            {/* <ListRequest /> */}
+            <RequestSpecialist />
           </>
         ),
       },
     ],
   },
   {
-    path: "/worker",
+    path: "worker",
     element: (
       <Suspense>
         <ProtectedRoute
@@ -96,11 +109,25 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "request",
-        element: <h1>Request Table</h1>,
+
+        children: [
+          {
+            path: "new",
+            element: <FormCreateRequetst />,
+          },
+          {
+            path: "list",
+            element: (
+              <div className="basis-full">
+                <ListRequest />
+              </div>
+            ),
+          },
+        ],
       },
       {
         path: "product",
-        element: <h1>Product Table</h1>,
+        element: <ProductPanel />,
       },
     ],
   },

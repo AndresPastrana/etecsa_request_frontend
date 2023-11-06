@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { UserService } from "../services/index";
-import { useSpecialistStore } from "../store";
+import { useAppStore } from "../store";
 import { UserFormData } from "../types";
 import useAuth from "./useAuth";
 import { toast } from "sonner";
@@ -8,8 +8,9 @@ import { toast } from "sonner";
 // This hook hanldes the api calls to the UserService and changes the current state
 export const useUsers = () => {
   // Zustand store
-  const { users, setUsers, addUser, updateUser, deleteUser } =
-    useSpecialistStore((state) => state);
+  const { users, setUsers, addUser, updateUser, deleteUser } = useAppStore(
+    (state) => state
+  );
   const { loggedUser = null } = useAuth();
 
   // States for handle the requests status

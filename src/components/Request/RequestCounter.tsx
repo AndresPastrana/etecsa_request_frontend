@@ -4,36 +4,14 @@ import {
   XCircleIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
-import { RequestService } from "../../services";
-import useAuth from "../../hooks/useAuth";
-import { RequestCounter } from "../../types";
-import { toast } from "sonner";
+
+import { useRequestConunter } from "../../hooks/useRequestConunter";
 
 export const RequestCounterBadge = () => {
-  const { loggedUser } = useAuth();
-  const [requestCounter, setRequestCounter] = useState<RequestCounter>({
-    approved: 0,
-    denied: 0,
-    pending: 0,
-  });
-
-  useEffect(() => {
-    RequestService.getRequestCountsByStatus({
-      headers: {
-        Authorization: `Bearer ${loggedUser?.access_token}`,
-      },
-    })
-      .then((c) => setRequestCounter(c))
-      .catch((err) => {
-        console.log(err);
-
-        toast.error("Error");
-      });
-  }, []);
+  const { requestCounter } = useRequestConunter();
 
   return (
-    <div className="flex justify-around h-full items-center">
+    <div className="flex justify-around  items-center">
       <Card className="max-w-fit max-h-[105px]">
         <Flex className="space-x-6">
           <Icon

@@ -1,6 +1,12 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { getURL } from "../helper";
-import { IRequest, RequestCounter, ServerResponse } from "../types";
+import {
+  IRequest,
+  IResource,
+  RequestCounter,
+  RequestFormData,
+  ServerResponse,
+} from "../types";
 import { RequestStatus } from "../const";
 
 const baseUrl = getURL(["SERVER", "PATH_REQUEST"]);
@@ -15,29 +21,57 @@ const getAllRequests = async (
 };
 
 const createRequest = async (
-  data: IRequest,
+  data: {
+    destiny: string;
+    resources: Array<Pick<IResource, "product" | "quantity">> | [];
+  },
   options: AxiosRequestConfig
-): Promise<IRequest> => {
-  const url = `${baseUrl}/create`;
-  const resp = await axios.post(url, data, { ...options });
-  const { data: createdData = null } = resp.data;
-  return createdData;
+) => {
+  try {
+    const url = `${baseUrl}/create`;
+    const resp = await axios.post<ServerResponse & { data: RequestFormData }>(
+      url,
+      data,
+      { ...options }
+    );
+
+    return resp.data.success ? resp.data.data : null;
+  } catch (error) {
+    throw new Error("Error while creating a new request");
+  }
 };
 
-const approveRequest = async (
-  id: string,
-  options: AxiosRequestConfig
-): Promise<void> => {
-  const url = `${baseUrl}/aprove/${id}`;
-  await axios.put(url, null, { ...options });
+const approveRequest = async (id: string, options: AxiosRequestConfig) => {
+  try {
+    const url = `${baseUrl}/aprove/${id}`;
+
+    const resp = await axios.put<ServerResponse & { data: RequestFormData }>(
+      url,
+      null,
+      {
+        ...options,
+      }
+    );
+    return resp.data.success ? resp.data.data : null;
+  } catch (error) {
+    throw new Error("Error while aproving request");
+  }
 };
 
-const denyRequest = async (
-  id: string,
-  options: AxiosRequestConfig
-): Promise<void> => {
-  const url = `${baseUrl}/denied/${id}`;
-  await axios.put(url, null, { ...options });
+const denyRequest = async (id: string, options: AxiosRequestConfig) => {
+  try {
+    const url = `${baseUrl}/denied/${id}`;
+    const resp = await axios.put<ServerResponse & { data: RequestFormData }>(
+      url,
+      null,
+      {
+        ...options,
+      }
+    );
+    return resp.data.success ? resp.data.data : null;
+  } catch (error) {
+    throw new Error("Error while denied request");
+  }
 };
 
 const getRequestCountsByStatus = async (

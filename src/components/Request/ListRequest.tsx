@@ -273,7 +273,7 @@ export const ListRequest: FC<Pick<Props, "handleAprove" | "handleDenied">> = ({
           <ButtonFactory
             text="Download Reports"
             variant="primary"
-            onClick={() => downloadPdfReport(filteredData)}
+            onClick={() => downloadPdfReport()}
           />
         </div>
       </Flex>

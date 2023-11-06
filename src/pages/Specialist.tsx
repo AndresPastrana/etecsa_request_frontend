@@ -44,9 +44,6 @@ const Specialist = () => {
           <Link to="bill">
             <ButtonFactory text="Bills" variant="light" color="neutral" />
           </Link>
-          <Link to="test">
-            <ButtonFactory text="Test" variant="light" color="neutral" />
-          </Link>
 
           <Logout
             text="Logout"

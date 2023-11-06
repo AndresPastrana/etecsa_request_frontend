@@ -41,9 +41,6 @@ export const FormCreateRequetst = () => {
   };
   const handleChangeCant = (e: React.SyntheticEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    console.log(name);
-    console.log(value);
-
     const q = value === "" ? 0 : parseInt(value);
     setRequest((prev) => {
       return {
@@ -67,23 +64,20 @@ export const FormCreateRequetst = () => {
       return toast.error("Invalid data");
     }
     createRequestAPI(request);
-
-    // TODO OK
   };
   useEffect(() => {
     Promise.all([loadProducts(), loadDestinies()]);
   }, []);
 
-  //  const [resources ,setResour] = useState([])
   return (
     <section className="basis-full flex flex-col">
       <Title className="text-3xl mb-10">Nueva Solicitud</Title>
-      <form className="max-w-lg mx-auto" onSubmit={handleSubmit}>
+      <form className=" mx-auto" onSubmit={handleSubmit}>
         <Title className="mb-3">Productos</Title>
-        <section className=" mb-8 max-h-[200px] overflow-y-scroll p-5 rounded-lg scroll-smooth scroll-m-1  shadow-tremor-card">
+        <section className=" mb-8 max-h-[400px] overflow-y-scroll p-5 rounded-lg scroll-smooth scroll-m-1  shadow-tremor-card">
           {products.map(({ name, aviableQuantity, id }) => {
             return (
-              <div className="flex items-center gap-4 p-2">
+              <div className="flex items-center gap-80 p-2">
                 <Flex
                   className="w-40 gap-2"
                   justifyContent="start"

@@ -3,8 +3,6 @@ import { createBrowserRouter } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { UserRole } from "../const";
 import { UserPanel } from "../components/Users/index";
-import { RequestCounterBadge } from "../components/Request/index";
-import Test from "../components/Test";
 import { Destiny } from "../components/Destiniy/Destiny";
 import { DepartmentPanel } from "../components/Departamnet/index";
 import { ProductPanel } from "../components/Products/index";
@@ -70,20 +68,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "bill",
-        element: (
-          <>
-            <h1>Bills</h1>
-            <Bills />
-          </>
-        ),
+        element: <Bills />,
       },
       {
         path: "destiny",
         element: <Destiny />,
-      },
-      {
-        path: "test",
-        element: <Test />,
       },
       {
         path: "request",

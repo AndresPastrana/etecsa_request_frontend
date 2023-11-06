@@ -5,12 +5,13 @@ import {
   TableCell,
   TableRow,
   TableHeaderCell,
+  Bold,
 } from "@tremor/react";
 import { IBilling } from "../../types";
 import { FC } from "react";
 
 const THead = () => {
-  const ths = ["Request Code", "Recursos", "Importe Total"];
+  const ths = ["Request Code", "Importe Total"];
 
   return (
     <TableHead>
@@ -39,7 +40,6 @@ const TBody: FC<TBodyProps> = ({ bills }) => {
         return (
           <TableRow key={id}>
             <TableCell>{request?._id || "null"}</TableCell>
-            <TableCell>{JSON.stringify(request?.resources || "")}</TableCell>
             <TableCell>{total_import}</TableCell>
           </TableRow>
         );
@@ -49,11 +49,8 @@ const TBody: FC<TBodyProps> = ({ bills }) => {
 };
 
 export const BillsTable: FC<TBodyProps> = ({ bills = [] }) => {
-  {
-    console.log(bills);
-  }
   return (
-    <Table className="grow max-h-full">
+    <Table className="grow max-h-96 ">
       <THead />
       <TBody bills={bills} />
     </Table>

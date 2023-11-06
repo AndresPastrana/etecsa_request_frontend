@@ -10,8 +10,8 @@ const Bills = () => {
   }, []);
 
   return (
-    <div>
-      {/* <p>{JSON.stringify(bills)}</p> */}
+    <div className="h-full flex flex-col">
+      <h1>Facturas</h1>
       <BillsTable bills={bills} />
     </div>
   );
